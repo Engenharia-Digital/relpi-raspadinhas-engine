@@ -25,6 +25,7 @@ _Observe que estes são apenas os caminhos das URLs; os métodos HTTP (GET, POST
 	Deletar lote de raspadinha: /api/v1/raspadinhas/lotes/{lote_id}
  
 
+
 1.2 CONFIGURAÇÃO DE PREMIAÇÃO
 
 	Definir configurações de premiação por lote: /api/v1/raspadinhas/lotes/{lote_id}/premiacao
@@ -32,3 +33,21 @@ _Observe que estes são apenas os caminhos das URLs; os métodos HTTP (GET, POST
 	Obter configurações de premiação por lote: /api/v1/raspadinhas/lotes/{lote_id}/premiacao
  
 	Atualizar configurações de premiação por lote: /api/v1/raspadinhas/lotes/{lote_id}/premiacao
+ 
+
+
+1.3 DISTRIBUIÇÃO DE PREMIOS
+
+	Distribuir prêmios em lote: /api/v1/raspadinhas/lotes/{lote_id}/distribuicao-premios
+ 
+	Obter status de distribuição de prêmios: /api/v1/raspadinhas/lotes/{lote_id}/distribuicao-premios/status
+
+
+ 
+ 1.4 RASPADINHAS INDIVIDUAIS (dentro de um lote)
+
+	Listar raspadinhas em lote: /api/v1/raspadinhas/lotes/{lote_id}/raspadinhas
+ 
+	Obter raspadinha por ID (dentro de Lote): /api/v1/raspadinhas/lotes/{lote_id}/raspadinhas/{raspadinha_id}
+ 
+	Atualizar status de raspadinha (e.g., Ativa/Inativa): /api/v1/raspadinhas/lotes/{lote_id}/raspadinhas/{raspadinha_id}/status
