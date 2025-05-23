@@ -1,4 +1,4 @@
-# Engenharia Digital - Gestão e venda de raspadinhas
+# RELPItecnologia - Gestão e venda de raspadinhas
 
 Esta documentação descreve a API RESTful para o ciclo de vida das raspadinhas, abrangendo desde a criação e configuração de premiação até a distribuição, venda e resgate de prêmios.
 
