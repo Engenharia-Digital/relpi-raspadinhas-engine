@@ -1,5 +1,3 @@
--- DDL (Data Definition Language) - Criação das Tabelas
--- Garante que as tabelas sejam criadas na ordem correta devido às dependências de chave estrangeira.
 
 DROP TABLE IF EXISTS transacoes;
 DROP TABLE IF EXISTS solicitacoes_premios;
@@ -8,37 +6,34 @@ DROP TABLE IF EXISTS configuracoes_premiacao;
 DROP TABLE IF EXISTS lotes_raspadinhas;
 DROP TABLE IF EXISTS usuarios;
 
--- Tabela de Usuários (para compradores e administradores)
 CREATE TABLE IF NOT EXISTS usuarios (
-    id VARCHAR(36) PRIMARY KEY, -- UUIDs como VARCHAR(36) no MySQL
+    id VARCHAR(36) PRIMARY KEY, -- UUIDs como VARCHAR(36)
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    senha_hash VARCHAR(255) NOT NULL, -- Armazenar hashes de senha, nunca senhas em texto puro
+    senha_hash VARCHAR(255) NOT NULL, 
     tipo_usuario VARCHAR(50) NOT NULL DEFAULT 'jogador', -- 'jogador' ou 'admin'
     saldo DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
     data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Tabela de Lotes de Raspadinhas
 CREATE TABLE IF NOT EXISTS lotes_raspadinhas (
-    id VARCHAR(36) PRIMARY KEY, -- UUIDs como VARCHAR(36) no MySQL
+    id VARCHAR(36) PRIMARY KEY,  -- UUIDs como VARCHAR(36)
     nome_lote VARCHAR(255) NOT NULL,
     descricao TEXT,
     preco_raspadinha DECIMAL(10, 2) NOT NULL,
     quantidade_total_raspadinhas INT NOT NULL,
     quantidade_disponivel INT NOT NULL,
     valor_total_premios DECIMAL(10, 2) NOT NULL,
-    percentual_rtp DECIMAL(5, 2) NOT NULL, -- Return to Player (e.g., 85.00 para 85%)
+    percentual_rtp DECIMAL(5, 2) NOT NULL, -- Return to player (ex 85.00 para 85%)
     status VARCHAR(50) NOT NULL DEFAULT 'ativo', -- 'ativo', 'inativo', 'esgotado', 'concluido'
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_inicio_vendas TIMESTAMP NULL, -- Pode ser NULL se ainda não começou a vender
     data_fim_vendas TIMESTAMP NULL
 );
 
--- Tabela de Configuração de Premiação por Lote
 CREATE TABLE IF NOT EXISTS configuracoes_premiacao (
-    id VARCHAR(36) PRIMARY KEY, -- UUIDs como VARCHAR(36) no MySQL
+    id VARCHAR(36) PRIMARY KEY, -- UUIDs como VARCHAR(36)
     lote_id VARCHAR(36) NOT NULL,
     nome_premio VARCHAR(255) NOT NULL,
     valor_premio DECIMAL(10, 2) NOT NULL,
@@ -47,9 +42,8 @@ CREATE TABLE IF NOT EXISTS configuracoes_premiacao (
     UNIQUE (lote_id, nome_premio) -- Garante que não haja prêmios duplicados para o mesmo lote
 );
 
--- Tabela de Raspadinhas Individuais
 CREATE TABLE IF NOT EXISTS raspadinhas (
-    id VARCHAR(36) PRIMARY KEY, -- UUIDs como VARCHAR(36) no MySQL
+    id VARCHAR(36) PRIMARY KEY, -- UUIDs como VARCHAR(36)
     lote_id VARCHAR(36) NOT NULL,
     codigo_unico VARCHAR(255) UNIQUE NOT NULL, -- Código único para cada raspadinha (pode ser gerado internamente)
     valor_premio_oculto DECIMAL(10, 2) NOT NULL DEFAULT 0.00, -- 0.00 para não premiada
@@ -63,9 +57,8 @@ CREATE TABLE IF NOT EXISTS raspadinhas (
     FOREIGN KEY (comprador_id) REFERENCES usuarios(id) ON DELETE SET NULL
 );
 
--- Tabela de Solicitações de Prêmios
 CREATE TABLE IF NOT EXISTS solicitacoes_premios (
-    id VARCHAR(36) PRIMARY KEY, -- UUIDs como VARCHAR(36) no MySQL
+    id VARCHAR(36) PRIMARY KEY, --- UUIDs como VARCHAR(36)
     raspadinha_id VARCHAR(36) UNIQUE NOT NULL, -- Cada raspadinha só pode ter uma solicitação de prêmio
     usuario_id VARCHAR(36) NOT NULL,
     valor_premio DECIMAL(10, 2) NOT NULL,
@@ -77,9 +70,8 @@ CREATE TABLE IF NOT EXISTS solicitacoes_premios (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
--- Tabela de Transações (para compras, créditos, resgates)
 CREATE TABLE IF NOT EXISTS transacoes (
-    id VARCHAR(36) PRIMARY KEY, -- UUIDs como VARCHAR(36) no MySQL
+    id VARCHAR(36) PRIMARY KEY, -- UUIDs como VARCHAR(36)
     usuario_id VARCHAR(36) NOT NULL,
     tipo_transacao VARCHAR(50) NOT NULL, -- 'compra_raspadinha', 'deposito', 'saque_premio', 'ajuste_saldo'
     valor DECIMAL(10, 2) NOT NULL,
@@ -93,10 +85,10 @@ CREATE TABLE IF NOT EXISTS transacoes (
 
 ---
 
--- DML (Data Manipulation Language) - Inserção de Dados de Exemplo Corrigida
+-- Inserção de dados exemplo
 
--- Inserir Usuários
--- Capturamos os IDs em variáveis de sessão APÓS a inserção
+---
+
 INSERT INTO usuarios (id, nome, email, senha_hash, tipo_usuario, saldo) VALUES
 (UUID(), 'Alice Silva', 'alice.silva@example.com', 'hash_alice_123', 'jogador', 150.00);
 SET @alice_id = (SELECT id FROM usuarios WHERE email = 'alice.silva@example.com');
@@ -114,7 +106,6 @@ INSERT INTO usuarios (id, nome, email, senha_hash, tipo_usuario, saldo) VALUES
 SET @diana_id = (SELECT id FROM usuarios WHERE email = 'diana.costa@example.com');
 
 
--- Inserir Lotes de Raspadinhas
 INSERT INTO lotes_raspadinhas (id, nome_lote, descricao, preco_raspadinha, quantidade_total_raspadinhas, quantidade_disponivel, valor_total_premios, percentual_rtp, status, data_inicio_vendas, data_fim_vendas) VALUES
 (UUID(), 'Verão Premiado 2025', 'Raspadinhas com tema de verão e prêmios refrescantes!', 5.00, 1000, 995, 4000.00, 80.00, 'ativo', '2025-05-20 09:00:00', '2025-08-31 23:59:59');
 SET @lote_verao_id = (SELECT id FROM lotes_raspadinhas WHERE nome_lote = 'Verão Premiado 2025');
@@ -124,7 +115,6 @@ INSERT INTO lotes_raspadinhas (id, nome_lote, descricao, preco_raspadinha, quant
 SET @lote_natal_id = (SELECT id FROM lotes_raspadinhas WHERE nome_lote = 'Natal Mágico 2025');
 
 
--- Inserir Configurações de Premiação
 INSERT INTO configuracoes_premiacao (id, lote_id, nome_premio, valor_premio, quantidade_premios) VALUES
 (UUID(), @lote_verao_id, 'Prêmio Principal', 1000.00, 1),
 (UUID(), @lote_verao_id, 'Prêmio Secundário', 100.00, 5),
@@ -136,8 +126,7 @@ INSERT INTO configuracoes_premiacao (id, lote_id, nome_premio, valor_premio, qua
 (UUID(), @lote_natal_id, 'Brinde', 10.00, 250);
 
 
--- Inserir Raspadinhas Individuais (simulando a distribuição de prêmios)
--- Primeiro as raspadinhas genéricas
+
 INSERT INTO raspadinhas (id, lote_id, codigo_unico, valor_premio_oculto, status) VALUES
 (UUID(), @lote_verao_id, 'RASP-VERAO-001', 1000.00, 'disponivel'), -- Prêmio Principal
 (UUID(), @lote_verao_id, 'RASP-VERAO-002', 100.00, 'disponivel'),
@@ -156,12 +145,10 @@ INSERT INTO raspadinhas (id, lote_id, codigo_unico, valor_premio_oculto, status,
 SET @raspadinha_vendida_nao_raspada_id = (SELECT id FROM raspadinhas WHERE codigo_unico = 'RASP-VERAO-007');
 
 
--- Inserir Solicitações de Prêmios
 INSERT INTO solicitacoes_premios (id, raspadinha_id, usuario_id, valor_premio, status) VALUES
 (UUID(), @raspadinha_vendida_premiada_id, @alice_id, 5.00, 'pendente');
 
 
--- Inserir Transações
 INSERT INTO transacoes (id, usuario_id, tipo_transacao, valor, raspadinha_id, status, descricao) VALUES
 (UUID(), @alice_id, 'compra_raspadinha', 5.00, @raspadinha_vendida_premiada_id, 'concluido', 'Compra Raspadinha Verão Premiado'),
 (UUID(), @bruno_id, 'compra_raspadinha', 5.00, @raspadinha_vendida_nao_raspada_id, 'concluido', 'Compra Raspadinha Verão Premiado'),
