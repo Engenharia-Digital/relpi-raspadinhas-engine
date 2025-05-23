@@ -4,9 +4,9 @@ Esta documentação descreve a API RESTful para o ciclo de vida das raspadinhas,
 
 Esta documentação será dividida em duas seções principais:
 
-⚙️ Gestão de raspadinhas: Abrange os endpoints relacionados à configuração, criação e gerenciamento dos lotes, incluindo a definição de prêmios, distribuição e outros recursos administrativos.
+- Gestão de raspadinhas: Abrange os endpoints relacionados à configuração, criação e gerenciamento dos lotes, incluindo a definição de prêmios, distribuição e outros recursos administrativos.
 
-⚙️ Vendas e operações: Detalha os endpoints para a interação do usuário com as raspadinhas, como compra, revelação de prêmios e solicitação de resgate.
+- Vendas e operações: Detalha os endpoints para a interação do usuário com as raspadinhas, como compra, revelação de prêmios e solicitação de resgate.
 
 # Endpoints (URLs)
 
@@ -14,8 +14,21 @@ _Observe que estes são apenas os caminhos das URLs; os métodos HTTP (GET, POST
 
 1.1 LOTES DE RASPADINHAS
 
-	Criar lote de raspadinha: /api/v1/raspadinhas/lotes 	
+	Criar lote de raspadinha: /api/v1/raspadinhas/lotes 
+ 
 	Obter lote de raspadinha ID: /api/v1/raspadinhas/lotes/{lote_id}
-	Listar lote de raspadinha: /api/v1/raspadinhas/lotes
+ 
+	Listar lotes de raspadinha: /api/v1/raspadinhas/lotes
+ 
 	Atualizar lote de raspadinha: /api/v1/raspadinhas/lotes/{lote_id}
+ 
 	Deletar lote de raspadinha: /api/v1/raspadinhas/lotes/{lote_id}
+ 
+
+1.2 CONFIGURAÇÃO DE PREMIAÇÃO
+
+	Definir configurações de premiação por lote: /api/v1/raspadinhas/lotes/{lote_id}/premiacao
+ 
+	Obter configurações de premiação por lote: /api/v1/raspadinhas/lotes/{lote_id}/premiacao
+ 
+	Atualizar configurações de premiação por lote: /api/v1/raspadinhas/lotes/{lote_id}/premiacao
