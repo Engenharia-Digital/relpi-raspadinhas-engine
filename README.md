@@ -13,7 +13,10 @@ Esta documentação será dividida em duas seções principais:
 
 # Endpoints (URLs)
 
-_Observe que estes são apenas os caminhos das URLs; os métodos HTTP (GET, POST, PUT, DELETE) e os parâmetros de requisição e resposta serão detalhados posteriormente._
+> [!TIP]
+> Observe que estes são apenas os caminhos das URLs; os métodos HTTP (GET, POST, PUT, DELETE) e os parâmetros de requisição e resposta serão detalhados posteriormente.
+
+### Seção 1: Gestão de raspadinhas
 
 1.1 LOTES DE RASPADINHAS
 
@@ -54,3 +57,28 @@ _Observe que estes são apenas os caminhos das URLs; os métodos HTTP (GET, POST
 	Obter raspadinha por ID (dentro de Lote): /api/v1/raspadinhas/lotes/{lote_id}/raspadinhas/{raspadinha_id}
  
 	Atualizar status de raspadinha (e.g., Ativa/Inativa): /api/v1/raspadinhas/lotes/{lote_id}/raspadinhas/{raspadinha_id}/status
+
+
+### Seção 2: Vendas e operações
+
+2.1 COMPRA DE RASPADINHAS
+
+	Comprar raspadinha: /api/v1/vendas/comprar
+ 
+	Listar raspadinhas compradas pelo usuário: /api/v1/usuarios/{user_id}/raspadinhas-compradas
+
+
+2.2 REVELAÇÃO DE PRÊMIO
+
+	Revelar prêmio de raspadinha: /api/v1/vendas/revelar/{raspadinha_id}
+
+
+2.3 SOLICITAÇÃO DE PRÊMIO
+
+	Solicitar resgate de prêmio: /api/v1/vendas/solicitar-premio/{raspadinha_id}
+ 
+	Listar solicitações de prêmios (para admin): /api/v1/admin/solicitacoes-premios
+ 
+	Atualizar status de solicitação de prêmio (para admin): /api/v1/admin/solicitacoes-premios/{solicitacao_id}/status
+
+
